@@ -26,7 +26,7 @@ class SEARCH_ENGINE():
         self.model_clip, self.preprocess_clip = load_clip_model(model_name = model_name, device=torch.device("cuda" if torch.cuda.is_available() else 'cpu'))
         self.model_blip = load_blip_itm(torch.device("cuda" if torch.cuda.is_available() else 'cpu'))
 
-        self.database_features = load_feature(r"/home/finn/AIC/C00_feature.npy", torch.device("cuda" if torch.cuda.is_available() else 'cpu'))
+        self.database_features = load_feature(r"data/C00_feature.npy", torch.device("cuda" if torch.cuda.is_available() else 'cpu'))
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
@@ -43,7 +43,7 @@ class SEARCH_ENGINE():
 
         torch.cuda.empty_cache()
 
-        image_path_list = glob.glob(r"/home/finn/AIC/C00_V00/*/**.jpg")
+        image_path_list = glob.glob(r"data/C00_V00/*/**.jpg")
         image_path_list.sort()
 
         dir = "results"
@@ -106,7 +106,7 @@ class SEARCH_ENGINE():
         # Compute the similarity between the search query and each frame using the Cosine similarity
         similarities = (100.0 * self.database_features @ key_frame_features.T)
         values, best_photo_idx = similarities.topk(display_results_count, dim=0)
-        image_path_list = glob.glob("/home/finn/AIC/C00_V00/*/**.jpg")
+        image_path_list = glob.glob("data/C00_V00/*/**.jpg")
         image_path_list.sort()
 
         dir = "results"
@@ -129,6 +129,7 @@ if __name__=="__main__":
     print(f"============================")
     print(f"===WELCOME SEARCH ENGINE====")
     print(f"============================")
+
     print('Type query [text of video]:')
     type = input()
     if str(type)=="text":
